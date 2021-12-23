@@ -1,3 +1,8 @@
+## my custom functions and aliases for ~/.bashrc
+## LeKilleRGallet
+##
+
+
 alias avenv='source venv/bin/activate'
 alias ignorevenv="echo 'venv/' >> .gitignore"
 
