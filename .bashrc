@@ -34,7 +34,7 @@ function gitgenesis() {
 }
 
 function sketch() {
-    if [[ "$1" == "python" ]]; then
+    if [[ "$1" == "python" || "$1" == "py" ]]; then
         code /home/lekillergallet/learning/sketchbook/Sketch.py
     elif [[ "$1" == "c" ]]; then
         code /home/lekillergallet/learning/sketchbook/Sketch.c
@@ -47,6 +47,45 @@ function sketch() {
     elif [[ "$1" == "commit" ]]; then
         (cd ~/learning/sketchbook/; gitcommitdate)
     else
-        echo "sketch [python|c|cpp|java|r]"
+        echo -e "sketch [py|c|cpp|java|r]"
     fi
 }
+
+function commitpush() {
+    #
+    if [[ "$1" == "sketch" ]]; then
+        (cd ~/learning/sketchbook/; gitcommitdate)
+        (cd ~/learning/sketchbook/; git push origin master)
+    elif [[ "$1" == "platzi" ]]; then
+        (cd ~/learning/platzi/; gitcommitdate)
+        (cd ~/learning/platzi/; git push origin master)
+    elif [[ "$1" == "university" ]]; then
+        (cd ~/learning/university/; gitcommitdate)
+        (cd ~/learning/university/; git push origin master)
+    elif [[ "$1" == "linuxshell" ]]; then
+        sed -n '119,$p' .bashrc > /home/lekillergallet/learning/linuxshell/.bashrc #validate both files are different before overwriting
+        (cd ~/learning/linuxshell/; gitcommitdate)
+        (cd ~/learning/linuxshell/; git push origin master) ##
+    #validate need commit for proyects and all
+    else
+        echo -e "commitpush [sketch|platzi|university|linuxshell] \n soon: proyects & all"
+    fi
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
