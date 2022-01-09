@@ -1,18 +1,22 @@
 ## my custom functions and aliases for ~/.bashrc
-## LeKilleRGallet
+## LeKilleRGallet 
 ##
 
-
-alias avenv='source venv/bin/activate'
-alias ignorevenv="echo 'venv/' >> .gitignore"
-
-
+#python related aliases
 alias py='python3'
 alias python='python3'
+alias avenv='source venv/bin/activate'
+alias ignorevenv="echo 'venv/' >> .gitignore"
+alias requirements="pip freeze > requirements.txt"
 
+#git related aliases
+alias undocommit='git reset --soft HEAD~1'
+
+#bashrc related aliases
 alias bashrc="source ~/.bashrc"
 alias code.bashrc="code ~/.bashrc"
 
+#       FUNCTIONS
 function pygenesis() {
     if [ -z "$1" ]; then
         python -m venv venv
@@ -72,7 +76,16 @@ function commitpush() {
     fi
 }
 
-
+function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgrade kernel i need to reinstall wifi drivers
+    cd ~/build/rtl8821CU
+    sudo make uninstall
+    cd ..
+    rm -rf rtl8821CU/
+    git clone https://github.com/brektrou/rtl8821CU.git
+    cd ~/build/rtl8821CU
+    make
+    sudo make install
+}
 
 
 
