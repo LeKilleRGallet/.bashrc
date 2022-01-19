@@ -11,10 +11,14 @@ alias requirements="pip freeze > requirements.txt"
 
 #git related aliases
 alias undocommit='git reset --soft HEAD~1'
+alias github='xdg-open https://github.com/$(git config user.name)' #open you profile in github if ur git user.name == github username
 
 #bashrc related aliases
 alias bashrc="source ~/.bashrc"
 alias code.bashrc="code ~/.bashrc"
+
+##
+alias upgrade='sudo apt update && sudo apt upgrade'
 
 #       FUNCTIONS
 function pygenesis() {
@@ -48,8 +52,12 @@ function sketch() {
         code /home/lekillergallet/learning/sketchbook/Sketch.java
     elif [[ "$1" == "r" ]]; then
         code /home/lekillergallet/learning/sketchbook/Sketch.r
-    elif [[ "$1" == "commit" ]]; then
-        (cd ~/learning/sketchbook/; gitcommitdate)
+    elif [[ "$1" == "all" ]]; then
+        code /home/lekillergallet/learning/sketchbook/Sketch.py
+        code /home/lekillergallet/learning/sketchbook/Sketch.c
+        code /home/lekillergallet/learning/sketchbook/Sketch.cpp
+        code /home/lekillergallet/learning/sketchbook/Sketch.java
+        code /home/lekillergallet/learning/sketchbook/Sketch.r
     else
         echo -e "sketch [py|c|cpp|java|r]"
     fi
@@ -67,9 +75,9 @@ function commitpush() {
         (cd ~/learning/university/; gitcommitdate)
         (cd ~/learning/university/; git push origin master)
     elif [[ "$1" == "linuxshell" ]]; then
-        sed -n '119,$p' .bashrc > /home/lekillergallet/learning/linuxshell/.bashrc #validate both files are different before overwriting
+        (cd /home/lekillergallet ;sed -n '119,$p' ~/.bashrc > /home/lekillergallet/learning/linuxshell/.bashrc) #validate both files are different before overwriting
         (cd ~/learning/linuxshell/; gitcommitdate)
-        (cd ~/learning/linuxshell/; git push origin master) ##
+        (cd ~/learning/linuxshell/; git push origin master --force) ##
     #validate need commit for proyects and all
     else
         echo -e "commitpush [sketch|platzi|university|linuxshell] \n soon: proyects & all"
@@ -85,6 +93,8 @@ function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgr
     cd ~/build/rtl8821CU
     make
     sudo make install
+    sleep 5m
+    sudo reboot
 }
 
 
