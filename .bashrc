@@ -43,21 +43,21 @@ function gitgenesis() {
 
 function sketch() {
     if [[ "$1" == "python" || "$1" == "py" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.py
+        code /home/$USER/learning/sketchbook/Sketch.py
     elif [[ "$1" == "c" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.c
+        code /home/$USER/learning/sketchbook/Sketch.c
     elif [[ "$1" == "cpp" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.cpp
+        code /home/$USER/learning/sketchbook/Sketch.cpp
     elif [[ "$1" == "java" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.java
+        code /home/$USER/learning/sketchbook/Sketch.java
     elif [[ "$1" == "r" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.r
+        code /home/$USER/learning/sketchbook/Sketch.r
     elif [[ "$1" == "all" ]]; then
-        code /home/lekillergallet/learning/sketchbook/Sketch.py
-        code /home/lekillergallet/learning/sketchbook/Sketch.c
-        code /home/lekillergallet/learning/sketchbook/Sketch.cpp
-        code /home/lekillergallet/learning/sketchbook/Sketch.java
-        code /home/lekillergallet/learning/sketchbook/Sketch.r
+        code /home/$USER/learning/sketchbook/Sketch.py
+        code /home/$USER/learning/sketchbook/Sketch.c
+        code /home/$USER/learning/sketchbook/Sketch.cpp
+        code /home/$USER/learning/sketchbook/Sketch.java
+        code /home/$USER/learning/sketchbook/Sketch.r
     else
         echo -e "sketch [py|c|cpp|java|r]"
     fi
@@ -75,7 +75,7 @@ function commitpush() {
         (cd ~/learning/university/; gitcommitdate)
         (cd ~/learning/university/; git push origin master)
     elif [[ "$1" == "linuxshell" ]]; then
-        (cd /home/lekillergallet ;sed -n '119,$p' ~/.bashrc > /home/lekillergallet/learning/linuxshell/.bashrc) #validate both files are different before overwriting
+        (cd /home/$USER ;sed -n '119,$p' ~/.bashrc > /home/$USER/learning/linuxshell/.bashrc) #validate both files are different before overwriting
         (cd ~/learning/linuxshell/; gitcommitdate)
         (cd ~/learning/linuxshell/; git push origin master --force) ##
     #validate need commit for proyects and all
@@ -85,15 +85,23 @@ function commitpush() {
 }
 
 function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgrade kernel i need to reinstall wifi drivers
-    cd ~/build/rtl8821CU
-    sudo make uninstall
-    cd ..
-    rm -rf rtl8821CU/
+    if [ -d /home/$USER/build/rtl8821CU ]; then
+        cd ~/build/rtl8821CU/
+        sudo make uninstall
+        cd ..
+        rm -rf rtl8821CU/
+    else
+        cd ~/build/
+    fi
     git clone https://github.com/brektrou/rtl8821CU.git
     cd ~/build/rtl8821CU
     make
     sudo make install
-    sleep 5m
+    echo -e '//'
+    echo -e 'Diver has been installed'
+    echo -e 'The Computer should be rebooted to apply changes'
+    echo -e '//'
+    sleep 1m
     sudo reboot
 }
 
