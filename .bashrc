@@ -23,11 +23,29 @@ alias upgrade='sudo apt update && sudo apt upgrade'
 #       FUNCTIONS
 function pygenesis() {
     if [ -z "$1" ]; then
+        #if no argument is passed create a venv with default python version
         python -m venv venv
     else
-        python$1 -m venv venv
+        
+        if [[ $1 =~ ^[0-9]+\.[0-9]+$ ]]; then
+            #if argument $1 is a version number create a venv with that version
+            python$1 -m venv venv
+        else
+            #if argument $1 is not a version number create a default venv
+            python -m venv venv
+        fi
     fi
     ignorevenv
+    avenv
+    for i in $@; do
+        if [[ $i == "-"* ]]; then
+            #if a argument have a hyphen at the beginning is asumed to be a pip install command
+            lib=$(echo $i | sed 's/-//')
+            pip install $lib
+        fi
+    done
+    requirements
+    deactivate
 }
 
 function gitcommitdate() {
@@ -52,14 +70,12 @@ function sketch() {
         code /home/$USER/learning/sketchbook/Sketch.java
     elif [[ "$1" == "r" ]]; then
         code /home/$USER/learning/sketchbook/Sketch.r
+    elif [[ "$1" == "sol" ]]; then
+        code /home/$USER/learning/sketchbook/Sketch.sol
     elif [[ "$1" == "all" ]]; then
-        code /home/$USER/learning/sketchbook/Sketch.py
-        code /home/$USER/learning/sketchbook/Sketch.c
-        code /home/$USER/learning/sketchbook/Sketch.cpp
-        code /home/$USER/learning/sketchbook/Sketch.java
-        code /home/$USER/learning/sketchbook/Sketch.r
+        (cd /home/$USER/learning/sketchbook/; code .)
     else
-        echo -e "sketch [py|c|cpp|java|r]"
+        echo -e "sketch [py|c|cpp|java|r|sol]"
     fi
 }
 
@@ -104,19 +120,3 @@ function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgr
     sleep 1m
     sudo reboot
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
