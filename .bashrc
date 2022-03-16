@@ -59,6 +59,16 @@ function gitgenesis() {
     git commit -m"genesis"
 }
 
+function ignoretex() {
+    echo '# Blacklist everything' >> .gitignore
+    echo '*' >> .gitignore
+    echo '# Whitelist all directories' >> .gitignore
+    echo '!*/' >> .gitignore
+    echo '# Whitelist the .tex and .pdf files' >> .gitignore
+    echo '!*.tex' >> .gitignore
+    echo '!*.pdf' >> .gitignore
+}
+
 function sketch() {
     if [[ "$1" == "python" || "$1" == "py" ]]; then
         code /home/$USER/learning/sketchbook/Sketch.py
@@ -119,4 +129,19 @@ function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgr
     echo -e '//'
     sleep 1m
     sudo reboot
+}
+
+function gitpull() {
+    if [[ "$1" == "sketch" ]]; then
+        (cd ~/learning/sketchbook/; git pull origin master)
+    elif [[ "$1" == "platzi" ]]; then
+        (cd ~/learning/platzi/; git pull origin master)
+    elif [[ "$1" == "university" ]]; then
+        (cd ~/learning/university/; git pull origin master)
+    elif [[ "$1" == "linuxshell" ]]; then
+        (cd ~/learning/linuxshell/; git pull origin master)
+        (cd ~/learning/linuxshell/; sed -n .bashrc > '119,$p' ~/.bashrc)
+    else
+        echo -e "gitpull [sketch|platzi|university|linuxshell]"
+    fi
 }
