@@ -8,6 +8,7 @@ alias python='python3'
 alias avenv='source venv/bin/activate'
 alias ignorevenv="echo 'venv/' >> .gitignore"
 alias requirements="pip freeze > requirements.txt"
+alias piprequirements="pip install -r requirements.txt"
 
 #git related aliases
 alias undocommit='git reset --soft HEAD~1'
@@ -41,7 +42,11 @@ function pygenesis() {
         if [[ $i == "-"* ]]; then
             #if a argument have a hyphen at the beginning is asumed to be a pip install command
             lib=$(echo $i | sed 's/-//')
-            pip install $lib
+            if [[ lib == "requirements.txt" ]]; then
+                pip install -r requirements.txt
+            else
+                pip install $lib
+            fi
         fi
     done
     requirements
@@ -67,6 +72,18 @@ function ignoretex() {
     echo '# Whitelist the .tex and .pdf files' >> .gitignore
     echo '!*.tex' >> .gitignore
     echo '!*.pdf' >> .gitignore
+}
+
+function textemplate() {
+    cp /home/lekillergallet/.template/LaTeX/main.tex .
+    cp /home/lekillergallet/.template/LaTeX/references.bib .
+    cp /home/lekillergallet/.template/LaTeX/UF_FRED_paper_style.sty .
+
+    ignoretex
+
+    echo '# Whitelist reference and style files' >> .gitignore
+    echo '!references.bib' >> .gitignore
+    echo '!UF_FRED_paper_style.sty' >> .gitignore
 }
 
 function sketch() {
@@ -129,19 +146,4 @@ function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgr
     echo -e '//'
     sleep 1m
     sudo reboot
-}
-
-function gitpull() {
-    if [[ "$1" == "sketch" ]]; then
-        (cd ~/learning/sketchbook/; git pull origin master)
-    elif [[ "$1" == "platzi" ]]; then
-        (cd ~/learning/platzi/; git pull origin master)
-    elif [[ "$1" == "university" ]]; then
-        (cd ~/learning/university/; git pull origin master)
-    elif [[ "$1" == "linuxshell" ]]; then
-        (cd ~/learning/linuxshell/; git pull origin master)
-        (cd ~/learning/linuxshell/; sed -n .bashrc > '119,$p' ~/.bashrc)
-    else
-        echo -e "gitpull [sketch|platzi|university|linuxshell]"
-    fi
 }
