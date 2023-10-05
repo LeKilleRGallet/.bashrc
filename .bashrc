@@ -22,6 +22,7 @@ alias code.bashrc="code ~/.bashrc"
 alias upgrade='sudo apt update && sudo apt upgrade'
 
 #       FUNCTIONS
+
 function pygenesis() {
     if [ -z "$1" ]; then
         #if no argument is passed create a venv with default python version
@@ -47,6 +48,10 @@ function pygenesis() {
             else
                 pip install $lib
             fi
+            # pygenesis 3.8.2 -numpy -pandas -requirements.txt
+            #This command will create a virtual environment using Python 3.8.2, activate it,
+            #install the numpy and pandas packages using pip, install any packages listed in the
+            #requirements.txt file using pip, run the requirements command, and deactivate the virtual environment.
         fi
     done
     requirements
