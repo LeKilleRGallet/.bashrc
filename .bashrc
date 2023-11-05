@@ -58,10 +58,22 @@ function pygenesis() {
     deactivate
 }
 
-function gitcommitdate() {
+function addcommit() {
     git add .
-    git commit -m "Updated: `date +'%d/%m/%Y'`"
+    if [ -z "$1" ]; then
+        git commit -m "Updated: $(date +'%d/%m/%Y')"
+    elif [[ $1 == -m* ]]; then
+        message=${1#-m}  # Remove the "-m" at the beginning
+        message=$(echo "$message" | sed -e 's/^ *//;s/ *$//')  # Remove leading and trailing spaces
+        if [[ $message == \"*\" || $message == \'*\' ]]; then
+            git commit -m $message
+        else
+            echo "The message is not enclosed in quotes."
+        fi
+    fi
 }
+
+
 
 function gitgenesis() {
     git init
@@ -80,9 +92,9 @@ function ignoretex() {
 }
 
 function textemplate() {
-    cp /home/lekillergallet/.template/LaTeX/main.tex .
-    cp /home/lekillergallet/.template/LaTeX/references.bib .
-    cp /home/lekillergallet/.template/LaTeX/UF_FRED_paper_style.sty .
+    cp /home/lekillergallet/template/LaTeX/main.tex .
+    cp /home/lekillergallet/template/LaTeX/references.bib .
+    cp /home/lekillergallet/template/LaTeX/UF_FRED_paper_style.sty .
 
     ignoretex
 
@@ -112,43 +124,22 @@ function sketch() {
 }
 
 function commitpush() {
-    #
-    if [[ "$1" == "sketch" ]]; then
-        (cd ~/learning/sketchbook/; gitcommitdate)
-        (cd ~/learning/sketchbook/; git push origin master)
-    elif [[ "$1" == "platzi" ]]; then
-        (cd ~/learning/platzi/; gitcommitdate)
-        (cd ~/learning/platzi/; git push origin master)
+    message=''
+    for arg in "$@"; do
+        if [[ $arg == -m* ]]; then
+            message=$arg
+        fi
+    done
+
+    if [ -z "$1" ] || [[ "$1" == "-m"* ]]; then
+        commitpush university $message
+        commitpush linuxshell $message
     elif [[ "$1" == "university" ]]; then
-        (cd ~/learning/university/; gitcommitdate)
-        (cd ~/learning/university/; git push origin master)
+        (cd ~/learning/university/; git diff --quiet && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master))
     elif [[ "$1" == "linuxshell" ]]; then
         (cd /home/$USER ;sed -n '119,$p' ~/.bashrc > /home/$USER/learning/linuxshell/.bashrc) #validate both files are different before overwriting
-        (cd ~/learning/linuxshell/; gitcommitdate)
-        (cd ~/learning/linuxshell/; git push origin master --force) ##
-    #validate need commit for proyects and all
+        (cd ~/learning/linuxshell/; git diff --quiet && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master --force))
     else
-        echo -e "commitpush [sketch|platzi|university|linuxshell] \n soon: proyects & all"
+        echo -e "commitpush args: [university|linuxshell] for all use commitpush without arguments"
     fi
-}
-
-function wifianx() { #just for realtek 8821CU drivers, note: idk but when i upgrade kernel i need to reinstall wifi drivers
-    if [ -d /home/$USER/build/rtl8821CU ]; then
-        cd ~/build/rtl8821CU/
-        sudo make uninstall
-        cd ..
-        rm -rf rtl8821CU/
-    else
-        cd ~/build/
-    fi
-    git clone https://github.com/brektrou/rtl8821CU.git
-    cd ~/build/rtl8821CU
-    make
-    sudo make install
-    echo -e '//'
-    echo -e 'Diver has been installed'
-    echo -e 'The Computer should be rebooted to apply changes'
-    echo -e '//'
-    sleep 1m
-    sudo reboot
 }
