@@ -126,12 +126,12 @@ function sketch() {
 function commitpush() {
     message=''
     for arg in "$@"; do
-        if [[ $arg == -m* ]]; then
+        if [[ $arg == -m* ]]; then # If an argument starts with '-m', it is considered as the commit message.
             message=$arg
         fi
     done
-
-    if [ -z "$1" ] || [[ "$1" == "-m"* ]]; then
+    
+    if [ -z "$1" ] || [[ "$1" == "-m"* ]]; then # If no argument is passed or the first argument is a commit message, commit and push to both 'university' and 'linuxshell' repositories.
         commitpush university $message
         commitpush linuxshell $message
     elif [[ "$1" == "university" ]]; then
