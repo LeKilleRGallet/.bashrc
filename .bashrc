@@ -135,10 +135,10 @@ function commitpush() {
         commitpush university $message
         commitpush linuxshell $message
     elif [[ "$1" == "university" ]]; then
-        (cd ~/learning/university/; git diff --quiet && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master))
+        (cd ~/learning/university/; git diff --no-index --quiet tracked_file untracked_file && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master))
     elif [[ "$1" == "linuxshell" ]]; then
         (cd /home/$USER ;sed -n '119,$p' ~/.bashrc > /home/$USER/learning/linuxshell/.bashrc) #validate both files are different before overwriting
-        (cd ~/learning/linuxshell/; git diff --quiet && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master --force))
+        (cd ~/learning/linuxshell/; git diff --no-index --quiet tracked_file untracked_file && echo "No changes to commit in $(basename $(pwd))" || (addcommit $message; git push origin master --force))
     else
         echo -e "commitpush args: [university|linuxshell] for all use commitpush without arguments"
     fi
