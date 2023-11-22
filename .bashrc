@@ -92,9 +92,9 @@ function ignoretex() {
 }
 
 function textemplate() {
-    cp /home/lekillergallet/template/LaTeX/main.tex .
-    cp /home/lekillergallet/template/LaTeX/references.bib .
-    cp /home/lekillergallet/template/LaTeX/UF_FRED_paper_style.sty .
+    cp /home/$USER/Templates/LaTeX/main.tex .
+    cp /home/$USER/Templates/LaTeX/references.bib .
+    cp /home/$USER/Templates/LaTeX/UF_FRED_paper_style.sty .
 
     ignoretex
 
